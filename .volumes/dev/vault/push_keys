@@ -28,6 +28,8 @@ vault secrets disable $secret_name
 vault secrets enable -path=$secret_name kv
 
 vault kv put "$secret_name/app" \
-  V_JDA_APP_ID="$(get_env_variable "JWIZARD_JDA_APP_ID")" \
-  V_JDA_SECRET="$(get_env_variable "JWIZARD_JDA_SECRET")" \
+  V_JDA_DEV_APP_ID="$(get_env_variable "JWIZARD_JDA_DEV_APP_ID")" \
+  V_JDA_DEV_SECRET="$(get_env_variable "JWIZARD_JDA_DEV_SECRET")" \
+  V_JDA_PROD_APP_ID="$(get_env_variable "JWIZARD_JDA_PROD_APP_ID")" \
+  V_JDA_PROD_SECRET="$(get_env_variable "JWIZARD_JDA_PROD_SECRET")" \
   V_JWT_SECRET_KEY="$(get_env_variable "JWIZARD_JWT_SECRET_KEY")"
