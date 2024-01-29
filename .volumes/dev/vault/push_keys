@@ -27,7 +27,7 @@ export VAULT_TOKEN=$vault_token
 vault secrets disable $secret_name
 vault secrets enable -path=$secret_name kv
 
-vault kv put "$secret_name/app" \
+vault kv put "$secret_name/common" \
   V_JDA_DEV_APP_ID="$(get_env_variable "JWIZARD_JDA_DEV_APP_ID")" \
   V_JDA_DEV_SECRET="$(get_env_variable "JWIZARD_JDA_DEV_SECRET")" \
   V_JDA_PROD_APP_ID="$(get_env_variable "JWIZARD_JDA_PROD_APP_ID")" \
