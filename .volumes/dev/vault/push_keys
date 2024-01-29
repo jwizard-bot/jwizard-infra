@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+set -u
+
+mounted_env_path="../../.env"
+secret_name="jwizard"
+
+get_env_variable() {
+  variable_name=$1
+  if [ -f "$mounted_env_path" ]; then
+    while IFS="=" read -r name value; do
+      if [ "$name" = "$variable_name" ]; then
+        echo "$value" | tr -d '\r'
+        return
+      fi
+    done <"$mounted_env_path"
+  fi
+  echo ""
+}
+
+vault operator unseal "$(get_env_variable "JWIZARD_VAULT_UNSEAL_KEY")"
+
+vault_token="$(get_env_variable "JWIZARD_VAULT_ROOT_TOKEN")"
+export VAULT_TOKEN=$vault_token
+
+vault secrets disable $secret_name
+vault secrets enable -path=$secret_name kv
+
+vault kv put "$secret_name/app" \
+  V_JDA_APP_ID="$(get_env_variable "JWIZARD_JDA_APP_ID")" \
+  V_JDA_SECRET="$(get_env_variable "JWIZARD_JDA_SECRET")" \
+  V_JWT_SECRET_KEY="$(get_env_variable "JWIZARD_JWT_SECRET_KEY")"

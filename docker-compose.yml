@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  jwizard-vault:
+    container_name: jwizard-vault
+    image: hashicorp/vault:1.14
+    ports:
+      - '${JWIZARD_VAULT_PORT}:8200'
+    volumes:
+      - ./.volumes/${JWIZARD_RUNTIME}/vault/vault-volume:/vault/data:rw
+      - ./.volumes/${JWIZARD_RUNTIME}/vault:/vault/config
+      - ./.env:/.env
+    environment:
+      - 'VAULT_ADDR=http://127.0.0.1:8200'
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.hcl
+    networks:
+      - jwizard-network
+
+networks:
+  jwizard-network:
+    driver: bridge

@@ -1,0 +1,6 @@
+.volumes
+example.env
+.gitignore
+docker-compose.yml
+LICENSE
+README.md
