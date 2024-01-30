@@ -18,6 +18,19 @@ services:
     networks:
       - jwizard-network
 
+  jwizard-mongo-db:
+    container_name: jwizard-mongo-db
+    image: bitnami/mongodb:6.0.13
+    user: root
+    ports:
+      - '${JWIZARD_MONGODB_PORT}:27017'
+    volumes:
+      - './.volumes/${JWIZARD_RUNTIME}/db/mongo-volume:/bitnami/mongodb/data/db'
+    environment:
+      - 'MONGODB_ROOT_PASSWORD=${JWIZARD_MONGODB_PASSWORD}'
+    networks:
+      - jwizard-network
+
 networks:
   jwizard-network:
     driver: bridge
