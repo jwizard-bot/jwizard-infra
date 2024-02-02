@@ -1,5 +1,5 @@
 <p align="center">
-    <img src=".github/banner.png" alt="">
+    <img src=".github/gh-banner.png" alt="">
 </p>
 
 This repo contains infrastructure configurations for Docker container and other CI/CD pipelines for JWizard backend
