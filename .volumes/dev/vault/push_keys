@@ -9,17 +9,26 @@ secret_name="jwizard"
 get_env_variable() {
   variable_name=$1
   if [ -f "$mounted_env_path" ]; then
-    while IFS="=" read -r name value; do
+    while IFS= read -r line; do
+      if [[ "$line" =~ ^[[:space:]]*# || "$line" =~ ^[[:space:]]*$ ]]; then
+        continue
+      fi
+      name=$(echo "$line" | cut -d '=' -f 1)
+      name=$(echo "$name" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
       if [ "$name" = "$variable_name" ]; then
-        echo "$value" | tr -d '\r'
+        value=$(echo "$line" | cut -d '=' -f 2-)
+        value=$(echo "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        echo "$value"
         return
       fi
-    done <"$mounted_env_path"
+    done < "$mounted_env_path"
   fi
   echo ""
 }
+echo $(get_env_variable "JWIZARD_VAULT_UNSEAL_KEY")
 
 vault operator unseal "$(get_env_variable "JWIZARD_VAULT_UNSEAL_KEY")"
+
 
 vault_token="$(get_env_variable "JWIZARD_VAULT_ROOT_TOKEN")"
 export VAULT_TOKEN=$vault_token
