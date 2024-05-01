@@ -21,7 +21,6 @@ services:
   jwizard-mongo-db:
     container_name: jwizard-mongo-db
     image: bitnami/mongodb:6.0.13
-    user: root
     ports:
       - '${JWIZARD_MONGODB_PORT}:27017'
     volumes:
