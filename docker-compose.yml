@@ -7,8 +7,8 @@ services:
     ports:
       - '${JWIZARD_VAULT_PORT}:8200'
     volumes:
-      - ./.volumes/${JWIZARD_RUNTIME}/vault/vault-volume:/vault/data:rw
-      - ./.volumes/${JWIZARD_RUNTIME}/vault:/vault/config
+      - ./.volumes/vault/vault-volume:/vault/data:rw
+      - ./.volumes/vault:/vault/config
       - ./.env:/.env
     environment:
       - 'VAULT_ADDR=http://127.0.0.1:8200'
@@ -18,15 +18,18 @@ services:
     networks:
       - jwizard-network
 
-  jwizard-mongo-db:
-    container_name: jwizard-mongo-db
-    image: bitnami/mongodb:6.0.13
+  jwizard-mysql-db:
+    container_name: jwizard-mysql-db
+    image: mysql:8.0.32
     ports:
-      - '${JWIZARD_MONGODB_PORT}:27017'
-    volumes:
-      - './.volumes/${JWIZARD_RUNTIME}/db/mongo-volume:/bitnami/mongodb/data/db'
+      - '${JWIZARD_MYSQL_PORT}:3306'
     environment:
-      - 'MONGODB_ROOT_PASSWORD=${JWIZARD_MONGODB_PASSWORD}'
+      - 'MYSQL_ROOT_PASSWORD=${JWIZARD_MYSQL_PASSWORD}'
+      - 'MYSQL_DATABASE=jwizard-db'
+    volumes:
+      - ./.volumes/mysql/mysql-volume:/var/lib/mysql
+    healthcheck:
+      test: "mysqladmin ping -u root -p$root"
     networks:
       - jwizard-network
 
