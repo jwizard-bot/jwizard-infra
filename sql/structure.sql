@@ -1,0 +1,119 @@
+CREATE TABLE IF NOT EXISTS bot_langs (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	
+	name VARCHAR(30) NOT NULL UNIQUE,
+	tag VARCHAR(10) NOT NULL UNIQUE,
+
+	PRIMARY KEY (id),
+
+	INDEX idx_tag_bot_langs(name)
+)
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS command_modules (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	
+	name VARCHAR(30) NOT NULL UNIQUE,
+	desc_pl VARCHAR(255) NOT NULL,
+	desc_en VARCHAR(255) NOT NULL,
+
+	PRIMARY KEY (id),
+	
+	INDEX idx_name_command_modules(name)
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS bot_commands (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+	name VARCHAR(30) NOT NULL UNIQUE,
+	alias VARCHAR(10) NOT NULL UNIQUE,
+	arg_desc_pl VARCHAR(255) DEFAULT NULL,
+	arg_desc_en VARCHAR(255) DEFAULT NULL,
+	desc_pl VARCHAR(255) NOT NULL,
+	desc_en VARCHAR(255) NOT NULL,
+
+	module_id BIGINT UNSIGNED NOT NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (module_id) REFERENCES command_modules(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+	INDEX idx_name_bot_commands(name)	
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS command_args (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+	name VARCHAR(30) NOT NULL UNIQUE,
+	casted_type VARCHAR(30) NOT NULL,
+	is_required BOOL NOT NULL,
+	desc_pl VARCHAR(255) NOT NULL,
+	desc_en VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (id),
+	
+	INDEX idx_name_command_args(name)
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS commands_args_binding (
+	command_id BIGINT UNSIGNED NOT NULL,
+	arg_id BIGINT UNSIGNED NOT NULL,
+	arg_pos INT UNSIGNED DEFAULT 1,
+	
+	FOREIGN KEY (command_id) REFERENCES bot_commands(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (arg_id) REFERENCES command_args(id) ON UPDATE CASCADE ON DELETE CASCADE
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS guilds (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	
+	discord_id VARCHAR(255) NOT NULL UNIQUE,
+	legacy_prefix CHAR NOT NULL DEFAULT '$',
+	music_text_channel_id VARCHAR(255) DEFAULT NULL,
+	lang_id BIGINT UNSIGNED NOT NULL,
+	dj_role_name VARCHAR(255) NOT NULL DEFAULT "DJWizard",
+	slash_enabled BOOL NOT NULL DEFAULT TRUE,
+	leave_empty_channel_sec INT UNSIGNED NOT NULL DEFAULT 120,
+	leave_no_tracks_channel_sec INT UNSIGNED NOT NULL DEFAULT 120,
+	voting_percentage_ratio INT UNSIGNED NOT NULL DEFAULT 50,
+	time_to_finish_voting_sec INT UNSIGNED NOT NULL DEFAULT 120,
+	random_auto_choose_track BOOL NOT NULL DEFAULT TRUE,
+	tracks_to_choose_max INT UNSIGNED NOT NULL DEFAULT 10,
+	time_after_auto_choose_sec INT UNSIGNED NOT NULL DEFAULT 30,
+	max_repeats_of_track INT UNSIGNED NOT NULL DEFAULT 30,
+	default_volume INT UNSIGNED NOT NULL DEFAULT 100,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (lang_id) REFERENCES bot_langs(id) ON UPDATE CASCADE ON DELETE CASCADE,
+
+	INDEX idx_discord_id_guilds(discord_id)
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS guilds_commands_binding (
+	guild_id BIGINT UNSIGNED NOT NULL,
+	command_id BIGINT UNSIGNED NOT NULL,
+	is_slash_enabled BOOL NOT NULL DEFAULT TRUE,
+	
+	FOREIGN KEY (guild_id) REFERENCES guilds(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (command_id) REFERENCES bot_commands(id) ON UPDATE CASCADE ON DELETE CASCADE
+)
+ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS guilds_modules_binding (
+	guild_id BIGINT UNSIGNED NOT NULL,
+	module_id BIGINT UNSIGNED NOT NULL,
+	
+	FOREIGN KEY (guild_id) REFERENCES guilds(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (module_id) REFERENCES command_modules(id) ON UPDATE CASCADE ON DELETE CASCADE
+)
+ENGINE=InnoDB;
