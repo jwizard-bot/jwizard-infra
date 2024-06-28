@@ -87,10 +87,36 @@ INSERT INTO commands_args_binding(command_id,arg_id,arg_pos) VALUES
 
 
 INSERT INTO command_arg_options(id,raw_value,desc_en,desc_pl,command_id,command_arg_id) VALUES
-(1, "rmf-fm", "RMF FM", "RMF FM", 37, 10);
-(1, "rmf-maxx", "RMF MAXX", "RMF MAXX", 37, 10);
+(1, "rmf-fm", "RMF FM", "RMF FM", 37, 10),
+(2, "rmf-maxx", "RMF MAXX", "RMF MAXX", 37, 10),
+(3, "zet", "Radio ZET", "Radio ZET", 37, 10),
+(4, "melo", "Melo Radio", "Melo Radio", 37, 10),
+(5, "anty", "Anty Radio", "Anty Radio", 37, 10);
 
 
 INSERT INTO radio_stations(id,name,slug,stream_url,proxy_stream_url,cover_image) VALUES
-(1, "RMF FM", "rmf-fm", "https://rs101-krk-cyfronet.rmfstream.pl/RMFFM48", null, "rmf-fm.jpg");
+(1, "RMF FM", "rmf-fm", "https://rs101-krk-cyfronet.rmfstream.pl/RMFFM48", null, "rmf-fm.jpg"),
 (2, "RMF MAXX", "rmf-maxx", "https://rs103-krk-cyfronet.rmfstream.pl/MAXXXWAW", null, "rmf-maxx.jpg");
+(3, "Radio ZET", "zet", "https://22533.live.streamtheworld.com/RADIO_ZETAAC.aac", null, "zet.jpg");
+(4, "Melo Radio", "melo", "https://27793.live.streamtheworld.com/MELORADIOAAC.aac", null, "melo.jpg");
+(5, "Anty Radio", "anty", "https://25483.live.streamtheworld.com/ANTYRADIOAAC.aac", null, "anty.jpg");
+
+
+INSERT INTO audio_sources (id,name,desc_pl,desc_en,source_class) VALUES
+(1, "youtube", "YouTube", "YouTube", "dev.lavalink.youtube.YoutubeAudioSourceManager"),
+(2, "soundcloud", "Soundcloud", "Soundcloud", "com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager"),
+(3, "bandcamp", "Bandcamp", "Bandcamp", "com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager"),
+(4, "vimeo", "Vimeo", "Vimeo", "com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager"),
+(5, "twitch", "Twitch", "Twitch", "com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager"),
+(6, "local", "Źródła lokalne", "Local sources", "com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager"),
+(7, "radio", "Wybrane stacje radiowe", "Selected radio stations", "com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager");
+
+
+INSERT INTO key_features (id,name,title_en,title_pl,desc_en,desc_pl,is_active) VALUES
+(1, "commands", "Handling legacy and slash commands", "Obsługa komendy prefiksowe oraz poleceń slash", "Concurrent support for prefix commands (starting with $ by default) and modern slash commands / supporting the same functions.", "Jednoczesna obsługa komend prefiksowych (domyślnie rozpoczynających się od $) oraz nowoczesnych komend slash / obsługujących te same funkcje.", true),
+(2, "audioPlayer", "Audio player", "Odtwarzacz muzyczny", "Ability to play, pause, skip and add audio items to a queue. Support for handling audio content from a wide variety of sources, including those marked as NSFW.", "Możliwość odtwarzania, zatrzymywania, pomijania oraz dodawanie elementów audio do kolejki. Wsparcie obsługi treści audio z wielu różnych źródeł, również tych oznaczonych jako NSFW.", true),
+(3, "radioSource", "Internet radio", "Radio internetowe", "Ability to receive broadcasts and view currently playing content of selected radio stations. For more information, visit the 'radio' page.", "Możliwość odbioru transmisji oraz podglądu aktualnie odtwarzanych treści wybranych stacji radiowych. Więcej informacji znajdziesz na stronie 'radio'.", true),
+(4, "votingSystem", "Voting system", "System głosowania", "Highly customizable voting system that allows skipping the currently playing audio source, shuffling the queue and other audio player actions.", "Wysoce konfigurowalny system głosowania umożliwiający pominięcie aktualnie odtwarzanego źródła dźwięku, przetasowanie kolejki oraz inne akcje odtwarzacza audio.", false),
+(5, "remotePlayback", "Remote playback via web browser", "Zdalne odtwarzanie z poziomu przeglądarki", "An innovative system for playing audio content without the need for commands, using a browser interface and the capabilities offered by real-time communication.", "Innowacyjny system odtwarzania treści audio bez potrzeby używania komend, z wykorzystaniem interfejsu przeglądarki oraz możliwości oferowanych przez komunikację w czasie rzeczywistym.", false),
+(6, "playlists", "Audio playlists", "Listy odtwarzania", "Save, manage and playback audio content stored in a proprietary playlist system. Interaction through commands and a web browser.", "Zapisywanie, zarządzanie i odtwarzanie treści audio zapisanych w autorskim systemie list odtwarzania. Interakcja poprzez komendy oraz przeglądarkę internetową.", false),
+(7, "management", "Guild management system", "System zarządzania gildią", "Manage commands, audio player settings, guild settings, and playlists assigned to a user account through a web browser.", "Zarządzanie komendami, ustawieniami odtwarzacza audio, ustawieniami gildii oraz listami odtwarzania przypisanymi do konta użytkownika poprzez przeglądarkę internetową.", false);
