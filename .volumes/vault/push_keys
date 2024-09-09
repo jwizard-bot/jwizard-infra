@@ -39,4 +39,6 @@ vault kv put "$secret_name/common" \
   V_JDA_SECRET="$(get_env_variable "JWIZARD_JDA_SECRET")" \
   V_JWT_SECRET_KEY="$(get_env_variable "JWIZARD_JWT_SECRET_KEY")" \
   V_MYSQL_USERNAME="$(get_env_variable "JWIZARD_MYSQL_USERNAME")" \
-  V_MYSQL_PASSWORD="$(get_env_variable "JWIZARD_MYSQL_PASSWORD")"
+  V_MYSQL_PASSWORD="$(get_env_variable "JWIZARD_MYSQL_PASSWORD")" \
+  V_S3_USERNAME="$(get_env_variable "JWIZARD_S3_USERNAME")" \
+  V_S3_PASSWORD="$(get_env_variable "JWIZARD_S3_PASSWORD")"
