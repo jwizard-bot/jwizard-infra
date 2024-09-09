@@ -44,7 +44,7 @@ services:
     environment:
       - 'MINIO_ROOT_USER=${JWIZARD_S3_USERNAME}'
       - 'MINIO_ROOT_PASSWORD=${JWIZARD_S3_PASSWORD}'
-      - 'MINIO_DEFAULT_BUCKETS=jwizard-static'
+      - 'MINIO_DEFAULT_BUCKETS=jwizard-static:public'
       - 'MINIO_SCHEME=http'
     volumes:
       - ./.volumes/s3/s3-volume:/bitnami/minio/data
