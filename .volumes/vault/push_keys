@@ -42,3 +42,7 @@ vault kv put "$secret_name/common" \
   V_MYSQL_PASSWORD="$(get_env_variable "JWIZARD_MYSQL_PASSWORD")" \
   V_S3_USERNAME="$(get_env_variable "JWIZARD_S3_USERNAME")" \
   V_S3_PASSWORD="$(get_env_variable "JWIZARD_S3_PASSWORD")"
+
+vault kv put "$secret_name/core" \
+  V_LAVA_NODE_1_TOKEN="$(get_env_variable "JWIZARD_LAVA_NODE_1_TOKEN")" \
+  V_LAVA_NODE_2_TOKEN="$(get_env_variable "JWIZARD_LAVA_NODE_2_TOKEN")"
