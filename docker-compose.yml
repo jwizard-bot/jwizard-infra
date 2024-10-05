@@ -60,7 +60,7 @@ services:
 
   jwizard-lava-node-1:
     container_name: jwizard-lava-node-1
-    image: ghcr.io/lavalink-devs/lavalink:4
+    image: ghcr.io/lavalink-devs/lavalink:latest
     user: root
     restart: unless-stopped
     ports:
@@ -106,7 +106,7 @@ services:
 
   jwizard-lava-node-2:
     container_name: jwizard-lava-node-2
-    image: ghcr.io/lavalink-devs/lavalink:4
+    image: ghcr.io/lavalink-devs/lavalink:latest
     user: root
     restart: unless-stopped
     ports:
