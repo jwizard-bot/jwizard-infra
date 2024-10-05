@@ -127,14 +127,27 @@ CREATE TABLE IF NOT EXISTS command_arg_options (
 ENGINE=InnoDB;
 
 
+CREATE TABLE IF NOT EXISTS radio_station_playback_providers (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+	url VARCHAR(255) NOT NULL,
+	parser_class_name VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (id)
+)
+ENGINE=InnoDB;
+
+
 CREATE TABLE IF NOT EXISTS radio_stations (
 	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	radio_key VARCHAR(255) NOT NULL,
 	stream_url VARCHAR(500) NOT NULL,
-	proxy_stream_url VARCHAR(500) DEFAULT NULL,
-	
+	playback_api VARCHAR(255) DEFAULT NULL,
+	api_provider_id BIGINT UNSIGNED DEFAULT NULL,
+
 	PRIMARY KEY (id),
+	FOREIGN KEY (api_provider_id) REFERENCES radio_station_playback_providers(id) ON UPDATE CASCADE ON DELETE CASCADE,
 
 	INDEX idx_slug_radio_stations(radio_key)
 )
@@ -282,12 +295,16 @@ INSERT INTO command_arg_options(id,option_key,command_id,command_arg_id) VALUES
 (5, "anty", 37, 10);
 
 
-INSERT INTO radio_stations(id,radio_key,stream_url,proxy_stream_url) VALUES
-(1, "rmf-fm", "https://rs101-krk-cyfronet.rmfstream.pl/RMFFM48", null),
-(2, "rmf-maxx", "https://rs103-krk-cyfronet.rmfstream.pl/MAXXXWAW", null);
-(3, "zet", "https://22533.live.streamtheworld.com/RADIO_ZETAAC.aac", null);
-(4, "melo", "https://27793.live.streamtheworld.com/MELORADIOAAC.aac", null);
-(5, "anty", "https://25483.live.streamtheworld.com/ANTYRADIOAAC.aac", null, "anty.jpg");
+INSERT INTO radio_station_playback_providers(id,url,parser_class_name) VALUES
+(1, "https://www.rmfon.pl/stacje", "ZetRadioPlaybackMapper"),
+(2, "https://rds.eurozet.pl/reader/var", "RmfRadioPlaybackMapper");
+
+INSERT INTO radio_stations(id,radio_key,stream_url,playback_api,api_provider_id) VALUES
+(1, "rmf-fm", "https://rs101-krk-cyfronet.rmfstream.pl/RMFFM48", "playlista_5.json.txt", 1),
+(2, "rmf-maxx", "https://rs103-krk-cyfronet.rmfstream.pl/MAXXXWAW", "playlista_213.json.txt", 1),
+(3, "zet", "https://22533.live.streamtheworld.com/RADIO_ZETAAC.aac", "radiozet.json?callback=rdsData", 2),
+(4, "melo", "https://27793.live.streamtheworld.com/MELORADIOAAC.aac", "zetgold.json?callback=rdsData", 2),
+(5, "anty", "https://25483.live.streamtheworld.com/ANTYRADIOAAC.aac", "antyradio.json?callback=rdsData", 2);
 
 
 INSERT INTO key_features (id,name,is_active) VALUES
