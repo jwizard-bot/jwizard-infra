@@ -17,6 +17,8 @@ mc config host add $mc_alias \
   --api S3v4 \
   --lookup path
 
+mc rm --recursive --force "$mc_alias/$bucket"
+
 upload_files() {
   local source_dir="$1"
   local target_dir="$2"
