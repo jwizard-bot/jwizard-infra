@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   jwizard-vault:
     container_name: jwizard-vault
